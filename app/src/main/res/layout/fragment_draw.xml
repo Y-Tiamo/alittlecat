@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.yyq.cat.fragment.DrawFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:layout_marginTop="3dp"
+        android:id="@+id/btn_to_web"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_recycler_view_bg"
+        android:drawableLeft="@drawable/ic_add_journal"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/string_dong_tai" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="2dp"
+        android:paddingRight="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/shape_recycler_view_bg" />
+
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/journal"
+        android:icon="@drawable/xiaoxi"
+        android:title="@string/string_menu_message"/>
+    <item
+        android:id="@+id/web"
+        android:icon="@drawable/renshu"
+        android:title="@string/string_of_menu_chat"/>
+    <item
+        android:id="@+id/draw"
+        android:icon="@drawable/shuaxin"
+        android:title="@string/string_of_menu_dongtai"/>
+</menu>

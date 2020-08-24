@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorBg">#dd00ff</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="color_main_bg">#EEEEEE</color>
+    <color name="color_button_bg">#FFFFFF</color>
+    <color name="color_of_words">#FFFFFF</color>
+    <color name="color_of_line">#ccd</color>
+    <color name="color_of_head_bg">#1878FF</color>
+</resources>

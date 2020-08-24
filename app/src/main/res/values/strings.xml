@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">A Little Cat</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_dong_tai">写一张随心贴留下我想说的话</string>
+    <string name="string_signture">這是簽名部分。。。</string>
+    <string name="string_app_title">喵</string>
+    <string name="string_menu_message">消息</string>
+    <string name="string_of_menu_chat">通讯</string>
+    <string name="string_of_menu_dongtai">动态</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="set">设置</string>
+    <string name="finish">退出</string>
+</resources>

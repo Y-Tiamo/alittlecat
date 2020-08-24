@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/night_mode"
+            android:icon="@drawable/ic_night_mode"
+            android:title="@string/night_mode" />
+        <item
+            android:id="@+id/set"
+            android:icon="@drawable/ic_set"
+            android:title="@string/set" />
+        <item
+            android:id="@+id/finish"
+            android:icon="@drawable/ic_finish"
+            android:title="@string/finish" />
+</menu>

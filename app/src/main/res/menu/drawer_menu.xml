@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_person_center"
+            android:icon="@drawable/persional_center"
+            android:title="个人中心" />
+        <item
+            android:id="@+id/nav_foot_point"
+            android:icon="@drawable/zuji"
+            android:title="足迹" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/fenxiang"
+            android:title="分享" />
+        <item
+            android:id="@+id/nav_item4"
+            android:icon="@drawable/saoyisao"
+            android:title="扫一扫" />
+
+        <item
+            android:id="@+id/nav_item5"
+            android:icon="@drawable/xiaoxi"
+            android:title="消息" />
+        <item
+            android:id="@+id/nav_item6"
+            android:icon="@drawable/yaoqing"
+            android:title="邀请" />
+        <item
+            android:id="@+id/nav_item7"
+            android:icon="@drawable/guankan"
+            android:title="观看" />
+        <item
+            android:id="@+id/nav_item8"
+            android:icon="@drawable/renshu"
+            android:title="人数" />
+        <item
+            android:id="@+id/nav_item9"
+            android:icon="@drawable/shuaxin"
+            android:title="刷新" />
+    </group>
+
+</menu>
