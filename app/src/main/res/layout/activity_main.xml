@@ -37,6 +37,7 @@
             android:layout_height="?actionBarSize"
             app:itemTextColor="@drawable/bottom_select"
             app:itemIconTint="@drawable/bottom_select"
+            android:background="@color/color_main_bg"
             app:menu="@menu/content_buttom_item" />
     </LinearLayout>
 

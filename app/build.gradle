@@ -8,18 +8,18 @@ android {
         applicationId "com.yyq.cat"
         minSdkVersion 23
         targetSdkVersion 29
-//        versionCode 1
-//        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME: applicationId,
+                JPUSH_PKGNAME: "com.yyq.cat",
                 JPUSH_APPKEY : "067e5a4e8c6fd432307735e1",
-                JPUSH_CHANNEL: "developer-default"
+                JPUSH_CHANNEL: "developer-default",
         ]
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -56,11 +56,15 @@ dependencies {
 
     //Okhttp
     implementation("com.squareup.okhttp3:okhttp:4.8.1")
-    //GSOn
+    
+    //GSON
     implementation 'com.google.code.gson:gson:2.8.6'
 
     //极光推送IM
     implementation('cn.jiguang.sdk:jmessage:2.9.2')
-    implementation('cn.jiguang.sdk:jcore:2.3.0')
+    implementation('cn.jiguang.sdk:jcore:2.4.2')
+
+    //QMUI
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
 
 }

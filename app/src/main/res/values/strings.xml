@@ -11,4 +11,7 @@
     <string name="night_mode">夜间模式</string>
     <string name="set">设置</string>
     <string name="finish">退出</string>
+    <string name="string_search">搜索</string>
+    <string name="add_friend">添加好友</string>
+    <string name="send_message">发送</string>
 </resources>

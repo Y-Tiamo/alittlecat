@@ -1,13 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.yyq.cat.fragment.WebFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageView
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/add_friend"
+        android:background="@drawable/shape_login_btn_bg"
+        android:text="@string/add_friend" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friend_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/view_page3"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#eef" />
 
-</FrameLayout>
+</LinearLayout>

@@ -9,4 +9,7 @@
     <color name="color_of_words">#FFFFFF</color>
     <color name="color_of_line">#ccd</color>
     <color name="color_of_head_bg">#1878FF</color>
+    <color name="color_edit_text_bg">#FFFFFF</color>
+    <color name="color_login_btn_bg">#1296db</color>
+    <color name="color_list_head">#fec</color>
 </resources>

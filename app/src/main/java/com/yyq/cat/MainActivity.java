@@ -3,6 +3,7 @@ package com.yyq.cat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -50,6 +52,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.event.ContactNotifyEvent;
+import cn.jpush.im.android.api.model.UserInfo;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements
     private List<View> viewList;//视图列表
     private ImageView ivHeadImage;//头像
     private ImageView ivToolBarLeftImage;
+    private TextView tvSign;//簽名部分
     private Handler handler;
     private Thread thread;
     private NavigationView navigationView;
@@ -75,20 +81,18 @@ public class MainActivity extends AppCompatActivity implements
     private TextView tvChengshi;
     private TextView tvWendu;
 
-    private JournalFragment journalFragment;
-    private WebFragment webFragment;
-    private DrawFragment drawFragment;
-    private Fragment[] fragments;
+    private JournalFragment journalFragment=null;
+    private WebFragment webFragment=null;
+    private DrawFragment drawFragment=null;
     private BottomNavigationView bottomNavi;
-    private int lastfragment = 0;
 
-    private boolean isLight=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_layout);
-
+        JMessageClient.registerEventReceiver(this);
+        ActivitiesManager.getInstance().addActivity(this);
         //初始化界面
         initLayout();
 
@@ -98,7 +102,35 @@ public class MainActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         onPermissions();//检察是否具有权限
-        getLocation();//获取定位信息
+//        getLocation();//获取定位信息
+    }
+
+    @Override
+    protected void onDestroy() {
+        JMessageClient.unRegisterEventReceiver(this);
+        super.onDestroy();
+    }
+
+    public void onEvent(ContactNotifyEvent event){
+        String reason =event.getReason();
+        String fromUserName=event.getFromUsername();
+        String appkey=event.getfromUserAppKey();
+        switch (event.getType()){
+            case invite_received://收到好友邀请
+                Log.d("好友请求",fromUserName);
+                break;
+            case invite_accepted://对方接收了你的好友邀请
+                //...
+                break;
+            case invite_declined://对方拒绝了你的好友邀请
+                //...
+                break;
+            case contact_deleted://对方将你从好友中删除
+                //...
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -112,13 +144,13 @@ public class MainActivity extends AppCompatActivity implements
         tvChengshi = findViewById(R.id.chengshi);
         tvWendu = findViewById(R.id.wendu);
 
+        tvSign=findViewById(R.id.sign);
+        UserInfo userInfo=JMessageClient.getMyInfo();
+        tvSign.setText(userInfo.getUserName());
 
-        journalFragment = new JournalFragment();
-        webFragment = new WebFragment();
-        drawFragment = new DrawFragment();
-        fragments = new Fragment[]{journalFragment, webFragment, drawFragment};
         bottomNavi = findViewById(R.id.navi_buttom);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, journalFragment).commit();
+        bottomNavi.setSelectedItemId(R.id.journal);
+        addFragment(R.id.journal);
         //OnNavigationItemSelectedListener
         bottomNavi.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
@@ -154,33 +186,29 @@ public class MainActivity extends AppCompatActivity implements
         };
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.journal:
                     viewPager.setVisibility(View.VISIBLE);
-                    if (lastfragment != 0) {
-                        switchFragment(lastfragment, 0);
-                        lastfragment = 0;
-                    }
-                    return true;
+                    removeAllFragment();
+                    addFragment(R.id.journal);
+                    menuItem.setChecked(true);
+                    break;
                 case R.id.web:
                     viewPager.setVisibility(View.VISIBLE);
-                    if (lastfragment != 1) {
-                        switchFragment(lastfragment, 1);
-                        lastfragment = 1;
-                    }
-                    return true;
+                    removeAllFragment();
+                    addFragment(R.id.web);
+                    menuItem.setChecked(true);
+                    break;
                 case R.id.draw:
                     viewPager.setVisibility(View.GONE);
-                    if (lastfragment != 2) {
-                        switchFragment(lastfragment, 2);
-                        lastfragment = 2;
-                    }
-                    return true;
+                    removeAllFragment();
+                    addFragment(R.id.draw);
+                    menuItem.setChecked(true);
+                    break;
                 default:
                     break;
             }
@@ -189,16 +217,43 @@ public class MainActivity extends AppCompatActivity implements
     };
 
     /**
-     * 切换fragment
+     * 移除所有fragment
      */
-    private void switchFragment(int lastfragment, int index) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //隐藏上个Fragment
-        transaction.hide(fragments[lastfragment]);
-        if (fragments[index].isAdded() == false) {
-            transaction.add(R.id.frame_layout, fragments[index]);
+    public void removeAllFragment(){
+        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+        if (journalFragment!=null){
+            transaction.remove(journalFragment);
         }
-        transaction.show(fragments[index]).commitAllowingStateLoss();
+        if (webFragment!=null){
+            transaction.remove(webFragment);
+        }
+        if (drawFragment!=null){
+            transaction.remove(drawFragment);
+        }
+        transaction.commit();
+    }
+
+    /**
+     * 根据选择添加fragment
+     * @param checkId
+     */
+    public void addFragment(int checkId){
+        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+        switch (checkId){
+            case R.id.journal:
+                journalFragment=new JournalFragment();
+                transaction.add(R.id.frame_layout,journalFragment);
+                break;
+            case R.id.web:
+                webFragment=new WebFragment();
+                transaction.add(R.id.frame_layout,webFragment);
+                break;
+            case R.id.draw:
+                drawFragment=new DrawFragment();
+                transaction.add(R.id.frame_layout,drawFragment);
+                break;
+        }
+        transaction.commit();
     }
 
     /**
@@ -290,10 +345,15 @@ public class MainActivity extends AppCompatActivity implements
                 Toast.makeText(this, "设置", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.finish://退出
+                JMessageClient.logout();
+                ActivitiesManager.getInstance().exit();
                 finish();
                 break;
             case R.id.btn_to_web:
                 Toast.makeText(this, "动态", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.toolbar_left_image:
+                drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
                 break;
